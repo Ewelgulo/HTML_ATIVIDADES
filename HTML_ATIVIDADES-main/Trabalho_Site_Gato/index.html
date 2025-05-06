@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vicigatos</title>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s, color 0.3s;
+            background-color: white;
+            color: black;
+        }
+
+        
+        .header {
+            display: flex;             
+            align-items: center;        
+            justify-content: flex-start; 
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #333;
+            color: white;
+            padding: 10px 10px;
+            border-radius: 5px;
+            width: 99%;
+        }
+
+        .logo {
+            width: 80px;               
+            height: 100px;
+            margin-right: 15px;         
+            margin-left: 15px;
+        }
+
+        .header h1 {
+            margin: 0;                  
+            font-size: 24px;
+        }
+
+        /* Descricao */
+        h2.DESCRI {
+            padding: 20px;
+            margin-top: 60px;
+            width: 80%;
+            font-size: 18px;
+            color: white;
+            text-align: center;
+            height: 150px;                  
+            margin: 20px auto;          
+            padding: 20px;
+            background-color: #666; 
+            border-radius: 5px;
+            white-space: normal;        
+        }
+        .gato-img {
+        display: block;
+        margin: 0 auto;
+        }
+
+        #atencaoUsuario {
+            border-radius: 5px;
+            text-align: center;
+            padding: 20px;
+            width: 80%;
+            background-color: #666;
+            box-shadow: 0.5;
+        }
+
+        #texto {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 15px;
+            font-size: 18px;
+            line-height: 1.5;
+            color: #333;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        #texto.mostrar {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /*Botoes*/
+        
+        #botao-modo {
+        position: fixed;            /* Fixa o botão na tela */
+        top: 150px;                  /* Distância do topo */
+        left: 20px;                 /* Distância da esquerda */
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        font-size: 24px;
+        text-align: center;
+        line-height: 60px;
+        border: none;
+        background-color: #ddd;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        z-index: 1000;              /* Fica acima dos outros elementos */
+        }
+
+        #botaoAPI {
+            padding: 10px 20px;
+            background-color: purple;
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: 20px;
+        }
+
+        #botaoAPI:hover {
+            background-color: #7a4ec6;
+            transform: scale(1.05);
+        }
+
+        #botaoAPI:active {
+            transform: scale(0.98);
+        }
+
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            font-size: 14px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 16px;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #7a4ec6;
+        }
+    </style>
+</head>
+<body>
+
+   
+    <div class="header">
+        <img class="logo" src="imagens/gatoLOGO.jpg" alt="Logo Vicigatos">
+        <h1>Vicigatos</h1>
+    </div>
+
+    
+    <h2 class="DESCRI">NESTE SITE VOCÊ ENCONTRARÁ ALGUMAS CURIOSIDADES SOBRE GATOS, BASTA APERTAR O BOTÃO ABAIXO</h2>
+
+
+    <button onclick="alternarModo()" id="botao-modo" aria-label="Alternar entre modo claro e escuro">🌙</button>
+
+   
+    <div id="atencaoUsuario">    
+        <h2>Clique aqui para que o Gato Galam lhe conte algumas curiosidades inacreditáveis sobre gatos! (ele só sabe inglês, era um cantor)</h2>
+    
+        
+        
+    <img id="gato-parado" class="gato-img" src="imagens/gatoMondayParado.jpg" height="209px" width="170px" alt="Gato parado">
+
+   
+    <img id="gato-gif" class="gato-img" src="imagens/cat-monday-left-me-broken-cat.gif" alt="Gato Galam" style="display: none;" height="209px" width="170px">
+
+    </div>
+    
+
+   
+    <button onclick="getData()" id="botaoAPI">Clique aqui!</button>
+    <div id="texto" class="curiosidade"></div>
+
+    
+    <footer>
+        <a href="#">Sobre nós</a>
+        <a href="#">Contato</a>
+        <a href="#">Política de Privacidade</a>
+    </footer>
+
+    <script>
+        let modoEscuro = false;
+
+        function alternarModo() {
+            modoEscuro = !modoEscuro;
+
+            if (modoEscuro) {
+                document.body.style.backgroundColor = "black";
+                document.body.style.color = "white";
+                document.getElementById("botao-modo").textContent = "☀️"; // Sol para modo claro
+                document.querySelector(".DESCRI").style.color = "white"; // Texto da DESCRI em branco no modo escuro
+            } else {
+                document.body.style.backgroundColor = "white";
+                document.body.style.color = "black";
+                document.getElementById("botao-modo").textContent = "🌙"; // Lua para modo escuro
+                document.querySelector(".DESCRI").style.color = "black"; // Texto da DESCRI em preto no modo claro
+            }
+        }
+
+        async function getData() {
+    const url = "https://meowfacts.herokuapp.com/";
+    const textoDiv = document.getElementById("texto");
+
+    // Trocar imagens: esconder gato parado, mostrar gif
+    document.getElementById("gato-parado").style.display = "none";
+    document.getElementById("gato-gif").style.display = "block";
+
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`Erro na resposta: ${response.status}`);
+        }
+
+        const json = await response.json();
+
+        textoDiv.classList.remove("mostrar");
+        textoDiv.innerHTML = json.data[0];
+
+        setTimeout(() => {
+            textoDiv.classList.add("mostrar");
+        }, 50);
+
+    } catch (error) {
+        console.error("Erro ao buscar dados da API:", error.message);
+        textoDiv.innerHTML = "Erro ao carregar curiosidade 😿";
+        textoDiv.classList.add("mostrar");
+    }
+}
+ 
+    </script>
+
+</body>
+</html>
